@@ -5,13 +5,14 @@
 // int get_balance() const
 #include <mutex>
 #include <iostream>
+#include <thread>
 class BankAccount{
 
 
    int balance = 0; 
    mutable std::mutex m;
 
-   public:
+   public: 
 
    
    void deposit(int amount){
@@ -39,12 +40,36 @@ int main(){
     acc1.deposit(1000);
     acc2.deposit(2000);
 
-    transfer(acc1,acc2,200);
-    transfer(acc2,acc1,500);
-    int bal1 =  acc1.get_balance();
-    int bal2 = acc2.get_balance();
-    std::cout << bal1 << std::endl;
-    std::cout << bal2 <<std::endl ;
+    // transfer(acc1,acc2,200);
+    // transfer(acc2,acc1,500);
+    // int bal1 =  acc1.get_balance();
+    // int bal2 = acc2.get_balance();
+    // std::cout << bal1 << std::endl;
+    // std::cout << bal2 <<std::endl ;
+    
+    std::thread t1{ [&] () {
+        for(int i=0; i<1000; i++){
+            transfer(acc1, acc2, 10);
+        }
+    }}; 
+    std::thread t2{ [&] () {
+        for(int i=0; i<1000; i++){
+            transfer(acc2, acc1, 10);
+        }
+    }}; 
 
+    if(t1.joinable()){
+        t1.join();
+    }
+    if(t2.joinable()){
+        t2.join();
+    }
+
+    if(acc1.get_balance() + acc2.get_balance() == 3000){
+        std::cout<< "success";
+    }
+    else{
+        std::cout<< acc1.get_balance()+acc2.get_balance();
+    }
 
 }
