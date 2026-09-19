@@ -1,7 +1,8 @@
 ### C++ ###
 # Prerequisites
 *.d
-
+*.yml
+*.dSYM
 # Compiled Object files
 *.slo
 *.lo
@@ -11,6 +12,7 @@
 # Precompiled Headers
 *.gch
 *.pch
+*.plist
 
 # Compiled Dynamic libraries
 *.so
@@ -31,6 +33,7 @@
 *.exe
 *.out
 *.app
+
 
 ### macOS ###
 # General
